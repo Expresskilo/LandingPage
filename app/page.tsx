@@ -23,7 +23,7 @@ export default function Home() {
       <FeaturesSection />
       <QuoteSection />
       <ProblemsSection />
-
+ 
       {/* Wrapped sections with arrow illustration */}
       <div className="relative">
         {/* Arrow illustration spanning all 3 sections */}

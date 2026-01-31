@@ -48,6 +48,7 @@ export default function Footer() {
               <a href="https://www.linkedin.com/company/expresskilo" className="w-7 h-7 rounded-md bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
                 <Linkedin className="w-4 h-4" />
                 
+
               </a>
             </div>
           </div>
