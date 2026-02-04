@@ -1,23 +1,12 @@
+'use client';
+
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function FeaturesSection() {
-  const features = [
-    {
-      icon: "/fi_7178653.svg",
-      title: "Trajets existants",
-      description: "S'appuyer sur des trajets déjà existants pour une livraison plus humaine, économique et respectueuse de l'environnement."
-    },
-    {
-      icon: "/fi_1728563.svg",
-      title: "Tarifs justes",
-      description: "Des prix transparents et justes pour des envois accessibles à tous."
-    },
-    {
-      icon: "/Group 39694.svg",
-      title: "Livraison humaine",
-      description: "Une solution collaborative pensée pour les besoins réels des utilisateurs."
-    }
-  ];
+  const { t } = useLanguage();
+  const features = t('features');
+  const icons = ["/fi_7178653.svg", "/fi_1728563.svg", "/Group 39694.svg"];
 
   return (
     <section className="py-12 sm:py-14 md:py-16 bg-gray-50">
@@ -25,32 +14,14 @@ export default function FeaturesSection() {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {features.map((feature, index) => (
-            <div 
-              key={index}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
-            >
-              {/* Icon */}
+            <div key={index} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
               <div className="mb-4 flex items-center justify-start">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
-                  <Image
-                    src={feature.icon}
-                    alt={feature.title}
-                    width={28}
-                    height={28}
-                    className="w-7 h-7"
-                  />
+                  <Image src={icons[index]} alt={feature.title} width={28} height={28} className="w-7 h-7" />
                 </div>
               </div>
-
-              {/* Title */}
-              <h3 className="text-base sm:text-lg font-bold mb-2" style={{ color: '#1A3A5C' }}>
-                {feature.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                {feature.description}
-              </p>
+              <h3 className="text-base sm:text-lg font-bold mb-2" style={{ color: '#1A3A5C' }}>{feature.title}</h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>

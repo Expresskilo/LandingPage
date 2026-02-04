@@ -1,6 +1,10 @@
+'use client';
+
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function QuoteSection() {
+  const { t } = useLanguage();
   return (
     <section className="py-10 sm:py-10 md:py-10 bg-[#F3F8FC] relative overflow-hidden">
       <div className="w-full max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 xl:px-20">
@@ -30,7 +34,7 @@ export default function QuoteSection() {
         {/* Quote text */}
         <div className="relative z-10 text-center max-w-4xl mx-auto">
           <p className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed" style={{ color: '#1A3A5C' }}>
-          Express<span className="text-orange-500 font-bold">Kilo</span> vise à rendre la livraison d'objets plus accessible, plus lisible et plus humaine, en s'appuyant sur des trajets déjà existants.
+            Express<span className="text-orange-500 font-bold">Kilo</span>{t('quote')}
           </p>
         </div>
 

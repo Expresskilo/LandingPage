@@ -4,41 +4,36 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Menu, Globe, ChevronDown, X } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
+import type { Locale } from "@/lib/translations";
+
+const localeToLabel: Record<Locale, string> = { fr: 'FR', en: 'ENG', es: 'ESP' };
 
 export default function Navbar() {
+  const { locale, setLocale, t } = useLanguage();
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("FR");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-// handle click outside of the dropdown
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsLanguageOpen(false);
       }
     };
-
-    if (isLanguageOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    if (isLanguageOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isLanguageOpen]);
 
-  // handle scroll of the navbar
-    useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const languages = ["FR", "ENG", "ESP"];
+  const nav = t('nav');
+  const languages: Locale[] = ['fr', 'en', 'es'];
 
   return (
     <nav 
@@ -68,27 +63,16 @@ export default function Navbar() {
 
           {/* Navigation Links - Centered in navbar */}
           <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 items-center space-x-8 xl:space-x-12">
-            <a
-              href="#problemes"
-              className="relative px-2 py-2 text-white font-normal text-sm transition-all duration-300 group hover:text-orange-400 hover:scale-105"
-            >
-              <span className="relative z-10">Problèmes du marché</span>
+            <a href="#problemes" className="relative px-2 py-2 text-white font-normal text-sm transition-all duration-300 group hover:text-orange-400 hover:scale-105">
+              <span className="relative z-10">{nav.marketProblems}</span>
               <span className="absolute bottom-0 left-0 w-full h-1 bg-orange-400 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
             </a>
-
-            <a
-              href="#solution"
-              className="relative px-2 py-2 text-white font-normal text-sm transition-all duration-300 group hover:text-orange-400 hover:scale-105"
-            >
-              <span className="relative z-10">Solution ExpressKilo</span>
+            <a href="#solution" className="relative px-2 py-2 text-white font-normal text-sm transition-all duration-300 group hover:text-orange-400 hover:scale-105">
+              <span className="relative z-10">{nav.solution}</span>
               <span className="absolute bottom-0 left-0 w-full h-1 bg-orange-400 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
             </a>
-
-            <a
-              href="#faq"
-              className="relative px-2 py-2 text-white font-normal text-sm transition-all duration-300 group hover:text-orange-400 hover:scale-105"
-            >
-              <span className="relative z-10">FAQ?</span>
+            <a href="#faq" className="relative px-2 py-2 text-white font-normal text-sm transition-all duration-300 group hover:text-orange-400 hover:scale-105">
+              <span className="relative z-10">{nav.faq}</span>
               <span className="absolute bottom-0 left-0 w-full h-1 bg-orange-400 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
             </a>
           </div>
@@ -102,32 +86,19 @@ export default function Navbar() {
                 className="flex items-center gap-2 px-3 py-2 text-white hover:text-white/80 font-normal text-sm transition-all duration-200"
               >
                 <Globe className="w-5 h-5" />
-                <span>{selectedLanguage}</span>
+                <span>{localeToLabel[locale]}</span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isLanguageOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* Dropdown Menu */}
               {isLanguageOpen && (
-                <div 
-                  className="absolute right-0 mt-2 w-20 rounded-lg shadow-xl overflow-hidden z-50"
-                  style={{
-                    background: "linear-gradient(90deg, #316DAC 0%, #1A3A5C 100%)",
-                  }}
-                >
+                <div className="absolute right-0 mt-2 w-20 rounded-lg shadow-xl overflow-hidden z-50" style={{ background: "linear-gradient(90deg, #316DAC 0%, #1A3A5C 100%)" }}>
                   {languages.map((lang) => (
                     <button
                       key={lang}
-                      onClick={() => {
-                        setSelectedLanguage(lang);
-                        setIsLanguageOpen(false);
-                      }}
-                      className={`w-full px-4 py-2.5 text-center text-sm font-medium transition-all duration-200 ${
-                        selectedLanguage === lang
-                          ? 'bg-white/20 text-white'
-                          : 'text-white/90 hover:text-white hover:bg-white/10'
-                      }`}
+                      onClick={() => { setLocale(lang); setIsLanguageOpen(false); }}
+                      className={`w-full px-4 py-2.5 text-center text-sm font-medium transition-all duration-200 ${locale === lang ? 'bg-white/20 text-white' : 'text-white/90 hover:text-white hover:bg-white/10'}`}
                     >
-                      {lang}
+                      {localeToLabel[lang]}
                     </button>
                   ))}
                 </div>
@@ -182,30 +153,15 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Sidebar Navigation Links */}
         <div className="flex flex-col p-4 space-y-1">
-          <a
-            href="#problemes"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 font-normal text-sm rounded-lg transition-all duration-200"
-          >
-            Problèmes du marché
+          <a href="#problemes" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 font-normal text-sm rounded-lg transition-all duration-200">
+            {nav.marketProblems}
           </a>
-
-          <a
-            href="#solution"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 font-normal text-sm rounded-lg transition-all duration-200"
-          >
-            Solution ExpressKilo
+          <a href="#solution" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 font-normal text-sm rounded-lg transition-all duration-200">
+            {nav.solution}
           </a>
-
-          <a
-            href="#faq"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 font-normal text-sm rounded-lg transition-all duration-200"
-          >
-            FAQ?
+          <a href="#faq" onClick={() => setIsMobileMenuOpen(false)} className="px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 font-normal text-sm rounded-lg transition-all duration-200">
+            {nav.faq}
           </a>
         </div>
         {/* Sidebar Footer */}

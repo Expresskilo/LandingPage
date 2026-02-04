@@ -1,6 +1,11 @@
+'use client';
+
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Hero() {
+  const { t } = useLanguage();
+  const hero = t('hero');
   return (
     <section 
       className="relative min-h-[600px] md:min-h-[700px] flex items-center w-full pt-16 sm:pt-20 md:pt-24 pb-0 overflow-hidden"
@@ -23,40 +28,32 @@ export default function Hero() {
           {/* Main headline */}
           <div className="space-y-3">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-white leading-[1.2] tracking-tight">
-            Envoyer moins cher.
+              {hero.sendCheaper}
               <br />
-              <span className=" bg-clip-text text-transparent">   </span>
-              Recevoir 
-              <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-                plus rapidement
-              </span>{" "}
-             
+              {hero.receiveWord}
+              <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">{hero.receiveFaster}</span>
             </h1>
-            
-            {/* Subheading with badge style */}
             <div className="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
-              <span className="text-xs sm:text-sm md:text-base font-medium text-white">
-                Pré-lancement — Rejoignez les premiers utilisateurs
-              </span>
+              <span className="text-xs sm:text-sm md:text-base font-medium text-white">{hero.preLaunchBadge}</span>
             </div>
           </div>
 
-          {/* Description text */}
           <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-lg mx-auto lg:mx-0 leading-relaxed font-light">
-            Inscrivez-vous dès maintenant et faites partie des premiers utilisateurs à découvrir notre service avant le lancement officiel.
+            {hero.description}
           </p>
 
-          {/* Action button */}
           <div className="flex items-center justify-center lg:justify-start pt-2">
+            <a href="#waitlist">
             <button className="group relative px-8 py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-sm sm:text-base rounded-full transition-all duration-300 shadow-2xl shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-105 overflow-hidden">
               <span className="relative z-10 flex items-center gap-2">
-                Rejoindre la liste d'attente
+                {hero.cta}
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </span>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             </button>
+            </a>
           </div>
         </div>
 

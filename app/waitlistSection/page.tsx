@@ -4,22 +4,14 @@ import { useState, useRef, useEffect } from 'react';
 import Image from "next/image";
 import { CANADA_CITIES } from "@/data/canada/page";
 import { ChevronDown } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const normalizeString = (str: string) => 
   str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-const HEAR_ABOUT_OPTIONS = [
-  { value: '', label: 'Sélectionnez une option' },
-  { value: 'reseaux-sociaux', label: 'Réseaux sociaux (Facebook, Instagram, LinkedIn)' },
-  { value: 'moteur-recherche', label: 'Moteur de recherche (Google, Bing)' },
-  { value: 'bouche-a-oreille', label: 'Bouche-à-oreille / Amis' },
-  { value: 'publicite', label: 'Publicité en ligne' },
-  { value: 'evenement', label: 'Événement / Conférence' },
-  { value: 'article', label: 'Article / Blog' },
-  { value: 'autre', label: 'Autre' }
-];
-
 export default function WaitlistSection() {
+  const { t } = useLanguage();
+  const w = t('waitlist');
   const [formData, setFormData] = useState({
     email: '',
     city: '',
@@ -93,7 +85,7 @@ export default function WaitlistSection() {
       const data = await res.json();
       if (!res.ok) {
         setSubmitStatus('error');
-        setErrorMessage(data.error || 'Erreur lors de l\'inscription.');
+        setErrorMessage(data.code === 'EMAIL_EXISTS' ? w.errorAlreadyRegistered : (data.error || w.errorConnection));
         return;
       }
       setSubmitStatus('success');
@@ -108,7 +100,7 @@ export default function WaitlistSection() {
   };
 
   return (
-<section className="py-12 sm:py-14 md:py-16 relative overflow-hidden">
+<section className="py-12 sm:py-14 md:py-16 relative overflow-hidden" id="waitlist">
       {/* Background shape - Left side */}
       <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-100 -z-10">          <Image
           src="/image 24.svg"
@@ -123,12 +115,8 @@ export default function WaitlistSection() {
         
         {/* Section header */}
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-blue-600">
-            Liste d'attente ExpressKilo
-          </h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Inscrivez-vous dès maintenant pour faire partie des premiers utilisateurs d'ExpressKilo et bénéficier d'un accès prioritaire lors du lancement.
-          </p>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-blue-600">{w.title}</h2>
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">{w.subtitle}</p>
         </div>
 
         {/* Waitlist Form */}
@@ -160,13 +148,11 @@ export default function WaitlistSection() {
 
                 {/* City Search */}
                 <div ref={cityRef} className="relative">
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#1A3A5C' }}>
-                    Ville
-                  </label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#1A3A5C' }}>{w.cityLabel}</label>
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Indiquez votre ville"
+                      placeholder={w.cityPlaceholder}
                       value={cityInput}
                       onChange={(e) => {
                         const val = e.target.value;
@@ -206,82 +192,44 @@ export default function WaitlistSection() {
 
               {/* User Type Radio Buttons */}
               <div>
-                <label className="block text-sm font-medium mb-3" style={{ color: '#1A3A5C' }}>
-                  Type d'utilisateur*
-                </label>
+                <label className="block text-sm font-medium mb-3" style={{ color: '#1A3A5C' }}>{w.userTypeLabel}</label>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="userType"
-                      value="particulier"
-                      checked={formData.userType === 'particulier'}
-                      onChange={(e) => setFormData({...formData, userType: e.target.value})}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-700">Particulier / Voyageur</span>
+                    <input type="radio" name="userType" value="particulier" checked={formData.userType === 'particulier'} onChange={(e) => setFormData({...formData, userType: e.target.value})} className="w-4 h-4 text-blue-600 focus:ring-blue-500" />
+                    <span className="ml-2 text-sm text-gray-700">{w.userTypes.particulier}</span>
                   </label>
-                  
                   <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="userType"
-                      value="entreprise"
-                      checked={formData.userType === 'entreprise'}
-                      onChange={(e) => setFormData({...formData, userType: e.target.value})}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-700">Entreprise / E-commerçant</span>
+                    <input type="radio" name="userType" value="entreprise" checked={formData.userType === 'entreprise'} onChange={(e) => setFormData({...formData, userType: e.target.value})} className="w-4 h-4 text-blue-600 focus:ring-blue-500" />
+                    <span className="ml-2 text-sm text-gray-700">{w.userTypes.entreprise}</span>
                   </label>
-                  
                   <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      name="userType"
-                      value="transporteur"
-                      checked={formData.userType === 'transporteur'}
-                      onChange={(e) => setFormData({...formData, userType: e.target.value})}
-                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-700">Transporteur agréé</span>
+                    <input type="radio" name="userType" value="transporteur" checked={formData.userType === 'transporteur'} onChange={(e) => setFormData({...formData, userType: e.target.value})} className="w-4 h-4 text-blue-600 focus:ring-blue-500" />
+                    <span className="ml-2 text-sm text-gray-700">{w.userTypes.transporteur}</span>
                   </label>
                 </div>
               </div>
 
               {/* Where did you hear about us */}
               <div>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#1A3A5C' }}>
-                  D'où avez-vous entendu parler de nous ?
-                </label>
-                <select
-                  value={formData.hearAboutUs}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, hearAboutUs: e.target.value }))}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-700"
-                >
-                  {HEAR_ABOUT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#1A3A5C' }}>{w.hearAboutLabel}</label>
+                <select value={formData.hearAboutUs} onChange={(e) => setFormData((prev) => ({ ...prev, hearAboutUs: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-700">
+                  {w.hearAboutOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               </div>
 
               {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold text-sm rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
-              >
-                {isSubmitting ? 'Inscription en cours...' : "S'inscrire à la liste d'attente"}
+              <button type="submit" disabled={isSubmitting} className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold text-sm rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                {isSubmitting ? w.submitting : w.submitButton}
               </button>
 
-              {/* Success Message */}
               {submitStatus === 'success' && (
                 <div className="flex items-center gap-2 text-sm text-green-600 pt-2">
                   <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>Inscription réussie! Accès prioritaire au lancement du service.</span>
+                  <span>{w.successMessage}</span>
                 </div>
               )}
               {submitStatus === 'error' && (
