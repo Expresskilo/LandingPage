@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from "next/image";
 import { CANADA_CITIES } from "@/data/canada/page";
-import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const normalizeString = (str: string) => 
@@ -89,7 +88,7 @@ export default function WaitlistSection() {
         return;
       }
       setSubmitStatus('success');
-      setFormData({ email: '', city: '', userType: 'particulier', hearAboutUs: '' });
+      setFormData({ email: '', city: '', userType: '', hearAboutUs: '' });
       setCityInput('');
     } catch {
       setSubmitStatus('error');
@@ -134,12 +133,12 @@ export default function WaitlistSection() {
                 {/* Email Input */}
                 <div>
                   <label className="block text-sm font-medium mb-2" style={{ color: '#1A3A5C' }}>
-                    Adresse courriel*
+                    {w.emailLabel.endsWith('*') ? <>{w.emailLabel.slice(0, -1)}<span className="text-red-500">*</span></> : w.emailLabel}
                   </label>
                   <input
                     type="email"
                     required
-                    placeholder="Entrez votre adresse email"
+                    placeholder="Entrez votre adresse courriel"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
@@ -163,9 +162,8 @@ export default function WaitlistSection() {
                       }}
                       onFocus={() => setIsCityOpen(true)}
                       onKeyDown={handleCityKeyDown}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-700"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-700"
                     />
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   </div>
                   {isCityOpen && filteredCities.length > 0 && (
                     <ul className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
@@ -192,7 +190,7 @@ export default function WaitlistSection() {
 
               {/* User Type Radio Buttons */}
               <div>
-                <label className="block text-sm font-medium mb-3" style={{ color: '#1A3A5C' }}>{w.userTypeLabel}</label>
+                <label className="block text-sm font-medium mb-3" style={{ color: '#1A3A5C' }}>{w.userTypeLabel.endsWith('*') ? <>{w.userTypeLabel.slice(0, -1)}<span className="text-red-500">*</span></> : w.userTypeLabel}</label>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <label className="flex items-center cursor-pointer">
                     <input type="radio" name="userType" value="particulier" checked={formData.userType === 'particulier'} onChange={(e) => setFormData({...formData, userType: e.target.value})} className="w-4 h-4 text-blue-600 focus:ring-blue-500" />

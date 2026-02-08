@@ -7,7 +7,7 @@ CREATE TABLE waitlist (
   email TEXT NOT NULL UNIQUE,
   city TEXT,
   user_type TEXT NOT NULL CHECK (user_type IN ('particulier', 'entreprise', 'transporteur')),
-  hear_about_us TEXT CHECK (hear_about_us IN ('reseaux-sociaux', 'moteur-recherche', 'bouche-a-oreille', 'publicite', 'evenement', 'article', 'autre') OR hear_about_us IS NULL OR hear_about_us = ''),
+  hear_about_us TEXT CHECK (hear_about_us IN ('Facebook', 'Instagram', 'LinkedIn', 'Google', 'bouche-a-oreille', 'publicite', 'evenement', 'article', 'autre') OR hear_about_us IS NULL OR hear_about_us = ''),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

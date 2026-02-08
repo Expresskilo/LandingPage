@@ -34,7 +34,10 @@ export default function QuoteSection() {
         {/* Quote text */}
         <div className="relative z-10 text-center max-w-4xl mx-auto">
           <p className="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed" style={{ color: '#1A3A5C' }}>
-            Express<span className="text-orange-500 font-bold">Kilo</span>{t('quote')}
+            Express<span className="text-orange-500 font-bold">Kilo</span>
+            {t('quote').split('\n').map((line, i) => (
+              <span key={i}>{i > 0 && <br />}{line}</span>
+            ))}
           </p>
         </div>
 

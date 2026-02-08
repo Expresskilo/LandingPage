@@ -28,7 +28,7 @@ export const translations = {
       { title: 'Tarifs justes', description: 'Des prix transparents et justes pour des envois accessibles à tous.' },
       { title: 'Livraison humaine', description: 'Une solution collaborative pensée pour les besoins réels des utilisateurs.' },
     ],
-    quote: " vise à rendre la livraison d'objets plus accessible, plus lisible et plus humaine, en s'appuyant sur des trajets déjà existants.",
+    quote: " vise à rendre la livraison d'objets plus accessible, plus lisible\net plus humaine, en s'appuyant sur des trajets déjà existants.",
     problems: {
       title: 'Problèmes du marché actuel',
       subtitle: "ExpressKilo s'engage à concevoir une solution de livraison plus simple, plus transparente et plus équitable, en plaçant les besoins des utilisateurs au cœur de chaque décision.",
@@ -84,7 +84,7 @@ export const translations = {
       title: "Liste d'attente ExpressKilo",
       subtitle: "Inscrivez-vous dès maintenant pour faire partie des premiers utilisateurs d'ExpressKilo et bénéficier d'un accès prioritaire lors du lancement.",
       emailLabel: 'Adresse courriel*',
-      emailPlaceholder: 'Entrez votre adresse email',
+      emailPlaceholder: 'Entrez votre adresse courriel',
       cityLabel: 'Ville',
       cityPlaceholder: 'Indiquez votre ville',
       noCityFound: 'Aucune ville trouvée',

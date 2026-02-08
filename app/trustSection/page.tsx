@@ -1,10 +1,9 @@
 'use client';
 
-import { MapPin, Users, Cpu, Handshake } from "lucide-react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 
-const icons = [MapPin, Users, Cpu, Handshake];
+const iconSrcs = [ "/Group 1000005265.svg", "/fi_11397320.svg", "/fi_1087927.svg","/fi_13483722.svg",];
 
 export default function TrustSection() {
   const { t } = useLanguage();
@@ -31,13 +30,11 @@ export default function TrustSection() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
-          {items.map((card, index) => {
-            const Icon = icons[index];
-            return (
+          {items.map((card, index) => (
               <div key={index} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg border border-gray-100 transition-all duration-300 hover:-translate-y-1 group">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Icon className="w-6 h-6 text-white" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+                    <Image src={iconSrcs[index]} alt="" width={24} height={24} className="w-6 h-6 object-contain" />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base sm:text-lg font-bold mb-2" style={{ color: '#1A3A5C' }}>{card.title}</h3>
@@ -45,8 +42,7 @@ export default function TrustSection() {
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))}
         </div>
 
       </div>

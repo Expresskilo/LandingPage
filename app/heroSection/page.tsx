@@ -61,7 +61,7 @@ export default function Hero() {
         <div className="hidden lg:flex relative h-[550px] items-center justify-center">
           <div className="relative w-full h-full flex items-center justify-center">
             <Image
-              src="/MainIllustartion.svg"
+              src="/hero.svg"
               alt="Hero illustration"
               width={500}
               height={600}
